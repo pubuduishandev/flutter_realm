@@ -7,9 +7,13 @@ void main() {
   runApp(const MyApp());
 }
 
-void createCar() {
+Realm getRealmInstance() {
   final config = Configuration.local([Car.schema]);
-  final realm = Realm(config);
+  return Realm(config);
+}
+
+void createCar() {
+  final realm = getRealmInstance();
   realm.write(() {
     realm.add(
       Car(
@@ -22,8 +26,7 @@ void createCar() {
 }
 
 void readCar() {
-  final config = Configuration.local([Car.schema]);
-  final realm = Realm(config);
+  final realm = getRealmInstance();
   final cars = realm.all<Car>();
   for (var car in cars) {
     print(car.toString()); // Print the car's details
@@ -31,8 +34,7 @@ void readCar() {
 }
 
 void updateCar() {
-  final config = Configuration.local([Car.schema]);
-  final realm = Realm(config);
+  final realm = getRealmInstance();
   realm.write(() {
     final cars = realm.query<Car>("make == 'Mercedes'");
     for (var car in cars) {
@@ -43,8 +45,7 @@ void updateCar() {
 }
 
 void deleteCar() {
-  final config = Configuration.local([Car.schema]);
-  final realm = Realm(config);
+  final realm = getRealmInstance();
   realm.write(() {
     final cars = realm.all<Car>();
     for (var car in cars) {
